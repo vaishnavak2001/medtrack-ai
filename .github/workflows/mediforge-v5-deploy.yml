@@ -26,7 +26,7 @@ jobs:
           pip install torch transformers datasets scikit-learn onnx tf2onnx
 
       - name: Download & Train Public Datasets
-        run: python scripts/train_free.py
+        run: python MediForge-v5-Free/scripts/train_free.py
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
 
