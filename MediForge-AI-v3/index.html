@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MediForge AI v3.0</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+  <script src="src/orchestrator.js"></script>
+  <style>body {font-family:Arial; max-width:1200px;margin:auto;padding:20px;}</style>
+</head>
+<body onload="init()">
+  <h1>🩺 MediForge AI: Ultimate 10-Agent MedAI Hub</h1>
+  
+  <input type="file" id="image" accept="image/*">
+  <button onclick="startVoice()">🎤 Speak Symptoms</button>
+  <textarea id="text" placeholder="e.g., blurry vision, cough">Symptoms</textarea>
+  <button onclick="runPipeline()">Diagnose</button>
+  
+  <div id="report"></div>
+  
+  <script>
+    async function init() {
+      if(window.loadAgents) {
+        await window.loadAgents();
+        console.log("✅ 10 Agents Loaded");
+      }
+    }
+    
+    function startVoice() { alert("Microphone init..."); }
+    
+    async function runPipeline() {
+      const query = document.getElementById('text').value;
+      const report = await window.orchestrate(query, null, null);
+      document.getElementById('report').innerHTML = report;
+    }
+  </script>
+</body>
+</html>
