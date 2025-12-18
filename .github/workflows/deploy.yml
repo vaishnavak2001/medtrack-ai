@@ -8,14 +8,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
-      with: python-version: 3.11
+      with:
+        python-version: 3.11
     - run: pip install -r requirements.txt
+      working-directory: ./MediForge-AI-v3
     - name: Agentic Train/Export
       run: python src/gen_agents.py
+      working-directory: ./MediForge-AI-v3
       env:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     - name: Deploy Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
+        publish_dir: ./MediForge-AI-v3
