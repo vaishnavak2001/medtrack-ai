@@ -25,7 +25,7 @@ if not api_key or not has_lib:
         "9": {"name": "Agent9_ProteinGAN", "description": "Protein Variant Pathogenicity Prediction", "status": "active"},
         "10": {"name": "Agent10_DREdge", "description": "Edge-Deployed Retinopathy Screening", "status": "active"}
     }
-    with open("src/agents.json", "w") as f:
+    with open("MediForge-AI-v3/src/agents.json", "w") as f:
         json.dump(mock_registry, f, indent=2)
     exit(0)
 
@@ -59,6 +59,6 @@ for i, desc in projects.items():
         print(f"Error generating Agent {i}: {e}")
 
 # Save Registry
-with open("src/agents.json", "w") as f:
+with open("MediForge-AI-v3/src/agents.json", "w") as f:
     json.dump(registry, f, indent=2)
 print("✅ agents.json registry created.")
