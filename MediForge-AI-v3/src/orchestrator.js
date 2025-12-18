@@ -4,12 +4,22 @@
 const agents = {};
 
 async function loadAgents() {
-    console.log("Loading Agents...");
-    // Simulation for Browser Verification
-    for (let i = 1; i <= 10; i++) {
-        agents[i] = { ready: true, name: `Agent${i}` };
+    console.log("Loading Agents Registry...");
+    try {
+        const response = await fetch('src/agents.json');
+        const registry = await response.json();
+
+        for (const [id, meta] of Object.entries(registry)) {
+            agents[id] = { ready: true, ...meta };
+            console.log(`Loaded ${meta.name}`);
+        }
+        return true;
+    } catch (e) {
+        console.warn("Failed to load registry, using fallback.", e);
+        // Fallback
+        for (let i = 1; i <= 3; i++) agents[i] = { ready: true, name: `FallbackAgent${i}` };
+        return false;
     }
-    return true;
 }
 
 async function orchestrate(query, audio, image) {
