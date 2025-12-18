@@ -1,0 +1,17 @@
+{
+  "1": {
+    "name": "Agent1_FedEHR",
+    "description": "Federated EHR Analysis",
+    "status": "active"
+  },
+  "2": {
+    "name": "Agent2_Vision",
+    "description": "Medical Imaging Analysis",
+    "status": "active"
+  },
+  "10": {
+    "name": "Agent10_Gateway",
+    "description": "Secure Inference Gateway",
+    "status": "active"
+  }
+}

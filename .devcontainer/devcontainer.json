@@ -1,0 +1,21 @@
+{
+    "name": "MediForge Agentic",
+    "image": "mcr.microsoft.com/devcontainers/python:1-3.11",
+    "features": {
+        "ghcr.io/devcontainers/features/github-cli": {},
+        "ghcr.io/devcontainers/features/nix": {}
+    },
+    "postCreateCommand": "pip install -r requirements.txt",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "github.copilot",
+                "google.gemini-code-assist"
+            ]
+        }
+    },
+    "forwardPorts": [
+        7860
+    ]
+}

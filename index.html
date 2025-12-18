@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediForge AI v3.1</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+  <script src="src/orchestrator.js"></script>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --accent: #38bdf8;
+      --success: #4ade80;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 20px;
+    }
+
+    h1 {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--accent);
+      margin-bottom: 40px;
+    }
+
+    .panel {
+      background: var(--card);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input,
+    textarea,
+    button {
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: inherit;
+    }
+
+    button {
+      background: var(--accent);
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      border: none;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+    #logs {
+      font-family: 'Consolas', monospace;
+      font-size: 0.85em;
+      color: #94a3b8;
+      height: 400px;
+      overflow-y: auto;
+    }
+
+    .log-entry {
+      margin-bottom: 5px;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 2px;
+    }
+
+    .success {
+      color: var(--success);
+    }
+
+    #report {
+      margin-top: 20px;
+      background: #0f172a;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent);
+    }
+  </style>
+</head>
+
+<body onload="init()">
+  <div class="container">
+    <h1>🩺 MediForge AI <span style="font-size:0.5em; opacity:0.7">v3.1 Agentic Hub</span></h1>
+
+    <!-- Main Interface -->
+    <div class="panel">
+      <h2>Diagnostic Console</h2>
+      <div class="controls">
+        <label>Patient Data Input</label>
+        <div style="display:flex; gap:10px">
+          <input type="file" id="image" accept="image/*" style="flex:1">
+          <button onclick="startVoice()">🎤 Voice</button>
+        </div>
+        <textarea id="text"
+          placeholder="Describe symptoms (e.g., 'Persistent cough, chest pain, history of smoking')...">Symptoms</textarea>
+        <button onclick="runPipeline()" style="font-size: 1.1em; padding: 15px;">🚀 Run Multi-Agent Diagnosis</button>
+      </div>
+      <div id="report"></div>
+    </div>
+
+    <!-- Live Logs -->
+    <div class="panel">
+      <h3>System Logs</h3>
+      <div id="logs">Initializing system...</div>
+    </div>
+  </div>
+
+  <script>
+    function log(msg, type = '') {
+      const div = document.createElement('div');
+      div.className = `log-entry ${type}`;
+      div.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      const logs = document.getElementById('logs');
+      logs.prepend(div);
+    }
+
+    // Override console.log to show in UI
+    const originalLog = console.log;
+    console.log = function (msg) { log(msg); originalLog(msg); };
+
+    async function init() {
+      if (window.loadAgents) {
+        log("Booting Orchestrator...", "success");
+        const success = await window.loadAgents();
+        if (success) log("✅ All Agents Configured", "success");
+        else log("⚠ Loaded Fallback Agents", "warn");
+      }
+    }
+
+    function startVoice() { log("🎤 Listening... (Simulated)", "success"); }
+
+    async function runPipeline() {
+      log("🚀 Starting Inference Pipeline...");
+      const query = document.getElementById('text').value;
+      const report = await window.orchestrate(query, null, null);
+      document.getElementById('report').innerHTML = report;
+      log("✅ Diagnosis Complete", "success");
+    }
+  </script>
+</body>
+
+</html>
