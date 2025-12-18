@@ -1,0 +1,19 @@
+const CACHE_NAME = 'mediforge-v5-v1';
+const urlsToCache = [
+    '/',
+    '/src/App.jsx',
+    '/src/styles.css',
+    // Add models after train
+];
+
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    );
+});
+
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        caches.match(event.request).then(response => response || fetch(event.request))
+    );
+});

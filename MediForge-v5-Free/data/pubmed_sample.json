@@ -1,0 +1,14 @@
+[
+    {
+        "query": "risk",
+        "text": "MIMIC-IV: Federated risk prediction 91% AUROC."
+    },
+    {
+        "query": "alz",
+        "text": "Speech biomarkers for Alzheimer's."
+    },
+    {
+        "query": "dr",
+        "text": "Diabetic retinopathy screening APTOS."
+    }
+]

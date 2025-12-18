@@ -1,0 +1,59 @@
+name: Train on Public Datasets & Deploy Pages
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  train-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch transformers datasets scikit-learn onnx tf2onnx
+
+      - name: Download & Train Public Datasets
+        run: python scripts/train_free.py
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: './MediForge-v5-Free/package-lock.json' 
+      
+      # Note: Adjusting PWD to subfolder if repo is root, but here we are in a subfolder inside repo?
+      # The user setup is creating MediForge-v5-Free INSIDE medtrack-ai.
+      # So we need to handle paths carefully.
+      # If this workflow is inside MediForge-v5-Free/.github/workflows, it runs relative to Repo Root.
+      # So we probably need to CD into MediForge-v5-Free for npm commands.
+
+      - name: Install NPM
+        working-directory: ./MediForge-v5-Free
+        run: npm install
+
+      - name: Build PWA
+        working-directory: ./MediForge-v5-Free
+        run: npm run build
+
+      - name: Deploy to Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./MediForge-v5-Free/dist
+          force_orphan: true
