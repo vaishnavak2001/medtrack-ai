@@ -1,19 +1,24 @@
-const CACHE_NAME = 'mediforge-v5-v1';
+// Service worker for offline caching
+// VitePWA generates its own SW via Workbox, but this serves as a fallback
+const CACHE_NAME = 'mediforge-v5-v2';
+const BASE = '/medtrack-ai/';
+
 const urlsToCache = [
-    '/',
-    '/src/App.jsx',
-    '/src/styles.css',
-    // Add models after train
+    BASE,
+    `${BASE}index.html`,
 ];
 
 self.addEventListener('install', event => {
     event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+        caches.open(CACHE_NAME)
+            .then(cache => cache.addAll(urlsToCache))
+            .catch(err => console.warn('Cache failed:', err))
     );
 });
 
 self.addEventListener('fetch', event => {
     event.respondWith(
-        caches.match(event.request).then(response => response || fetch(event.request))
+        caches.match(event.request)
+            .then(response => response || fetch(event.request))
     );
 });

@@ -28,6 +28,7 @@ export default defineConfig({
             }
         })
     ],
+    base: '/medtrack-ai/',
     build: {
         target: 'es2022',
         outDir: 'dist'

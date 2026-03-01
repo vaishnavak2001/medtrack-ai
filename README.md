@@ -6,6 +6,16 @@ This project explores the intersection of **agentic AI architectures** and **cli
 
 ---
 
+## Screenshots
+
+| Diagnostic Console | Diagnosis Results |
+|---|---|
+| ![MediForge Diagnostic Console](docs/screenshots/diagnostic_console.png) | ![Diagnosis Results with 96% Confidence](docs/screenshots/diagnosis_results.png) |
+
+> The v3 lightweight version running locally — 10 agents loaded, real-time system logs, and a 96% confidence diagnostic report.
+
+---
+
 ## Why This Project?
 
 The healthcare AI landscape is fragmented. Most solutions are single-model, cloud-dependent, and proprietary. MediForge takes a fundamentally different approach:
