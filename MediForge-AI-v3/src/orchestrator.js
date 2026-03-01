@@ -1,10 +1,10 @@
-// TF.js Polyfill for Python Agents
-// Note: In a real build, we import libraries. For raw HTML usage, we rely on script tags.
+// orchestrator.js — Multi-agent inference pipeline
+// Loads agent definitions from agents.json and runs mock cascade inference
 
 const agents = {};
 
 async function loadAgents() {
-    console.log("Loading Agents Registry...");
+    console.log("Loading agent registry...");
     try {
         const response = await fetch('src/agents.json');
         const registry = await response.json();
@@ -15,37 +15,39 @@ async function loadAgents() {
         }
         return true;
     } catch (e) {
-        console.warn("Failed to load registry, using fallback.", e);
-        // Fallback
-        for (let i = 1; i <= 3; i++) agents[i] = { ready: true, name: `FallbackAgent${i}` };
+        console.warn("Registry unavailable, falling back to defaults", e);
+        // Fallback agents so the UI still works
+        for (let i = 1; i <= 3; i++) {
+            agents[i] = { ready: true, name: `FallbackAgent${i}` };
+        }
         return false;
     }
 }
 
 async function orchestrate(query, audio, image) {
-    // Mock RAG
-    const rag = { "vision": ["Retinopathy study 2024"] };
+    // Simulated RAG retrieval — would normally search a vector store
+    const ragContext = { "vision": ["Retinopathy study 2024"] };
 
-    // Mock Inference Logic
+    // Run each agent's inference (mock for demo)
     let results = {};
-    results[1] = { pred: "Low Risk", conf: 0.95 }; // Agent 1 is always EHR
+    results[1] = { pred: "Low Risk", conf: 0.95 };
 
     if (query && query.includes('vision')) {
         results[10] = { pred: "Detected Abnormality", conf: 0.92 };
     }
 
-    return generateReport(results, rag[query] || []);
+    return generateReport(results, ragContext[query] || []);
 }
 
 function generateReport(results, ragData) {
-    let html = `<h2>Report (96% Conf)</h2><ul>`;
+    let html = `<h2>Diagnostic Report (96% Confidence)</h2><ul>`;
     for (const [k, v] of Object.entries(results)) {
-        html += `<li>Agent${k}: ${v.pred} (${v.conf})</li>`;
+        html += `<li>Agent ${k}: ${v.pred} (${v.conf})</li>`;
     }
-    html += `</ul><p>RAG Context: ${ragData.length > 0 ? ragData : 'None'}</p>`;
+    html += `</ul><p>RAG Context: ${ragData.length > 0 ? ragData.join(', ') : 'None'}</p>`;
     return html;
 }
 
-// Expose to window for HTML access
+// Expose globally for the HTML page
 window.loadAgents = loadAgents;
 window.orchestrate = orchestrate;

@@ -2,17 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Glassmorphism card used throughout the dashboard */
 .glass-card {
-  @apply bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-6 hover:shadow-neon transition-all;
+  @apply bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-6 transition-all;
 }
 
-.shadow-neon {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+.glass-card:hover {
+  @apply shadow-neon;
 }
 
+/* Gradient text effect for the hero heading */
 .gradient-text {
-  background: linear-gradient(to right, #3b82f6, #10b981);
+  background: linear-gradient(135deg, #3b82f6, #10b981, #8b5cf6);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: gradient-x 3s ease infinite;
 }

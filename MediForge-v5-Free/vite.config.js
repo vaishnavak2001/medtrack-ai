@@ -9,13 +9,18 @@ export default defineConfig({
             registerType: 'autoUpdate',
             devOptions: { enabled: true },
             workbox: {
-                globPatterns: ['**/*.{js,css,html,onnx,bin,json}']
+                globPatterns: ['**/*.{js,css,html,json}']
             },
             manifest: {
                 name: 'MediForge AI Clinic',
                 short_name: 'MediForge',
+                description: 'Open-source multi-agent medical AI diagnostic platform',
                 icons: [
-                    { src: 'data:image/svg+xml;base64,...', sizes: '192x192', type: 'image/png' }  // Base64 icon
+                    {
+                        src: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIHJ4PSIzMiIgZmlsbD0iIzBmMTcyYSIvPjx0ZXh0IHg9Ijk2IiB5PSIxMTAiIGZvbnQtc2l6ZT0iODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMzOGJkZjgiPk1GPC90ZXh0Pjwvc3ZnPg==',
+                        sizes: '192x192',
+                        type: 'image/svg+xml'
+                    }
                 ],
                 theme_color: '#0ea5e9',
                 background_color: '#020617',
